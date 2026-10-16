@@ -22,6 +22,9 @@
 
 - [서비스 핵심 장표 — 10쪽](서비스_핵심장표.pdf)
 - [장려상 상장 — 학번 가림](장려상_학번가림.pdf)
+- [클래스 다이어그램](docs/diagrams/class.png)
+- [기능별 시퀀스 다이어그램 — 10쪽](docs/diagrams/sequence.pdf)
+- [미션빙고 시퀀스 다이어그램](docs/diagrams/mission-bingo.png)
 
 
 ![담다 서비스 소개](서비스소개.jpg)
