@@ -20,6 +20,7 @@
 
 ## 증빙 자료
 
+- [Mermaid 다이어그램 — 코드와 미리보기 12개](docs/diagrams/mermaid/README.md)
 - [서비스 핵심 장표 — 10쪽](서비스_핵심장표.pdf)
 - [장려상 상장 — 학번 가림](장려상_학번가림.pdf)
 - [클래스 다이어그램](docs/diagrams/class.png)

@@ -1,0 +1,187 @@
+%% 보관 이미지에서 복원한 Mermaid 코드. 당시 원본 소스가 아닙니다.
+classDiagram
+    class User {
+        -String userId
+        -String hearingStatus
+        -Map~missionStatus~
+        -location
+        +pressButton()
+        +viewBingo()
+        +sendMissionData()
+        +selectMood()
+        +getShareProfile()
+        +updateShareProfile()
+        +getPrivateInfo()
+        +updatePrivateInfo()
+        +setSubtitleSettings(size, color)
+        +sendFeedback(text)
+        +requestRescue(location)
+    }
+    class Teacher {
+        +createClassroom()
+        +uploadLectureMaterial()
+        +writeClassNotice()
+        +getDeafUnderstandingInfo()
+        +getAssistiveDeviceInfo()
+        +assignGroupRole()
+    }
+    class HealthTeacher {
+        +searchStudentRecord(name)
+        -recordTreatment(details)
+        -manageFollowUp()
+    }
+    class NoiseSensor {
+        +detectNoiseLevel()
+        +alertHighNoise(userId)
+    }
+    class SirenDetector {
+        +detectEmergencySound()
+        +popupEmergencyMessage(userId)
+    }
+    class InteractionService {
+        +showSurpriseMessage(userId)
+    }
+    class HealthVisit {
+        -DateTime visitTime
+        -User student
+        -HealthRecord record
+    }
+    class HealthRecord {
+        -String studentName
+        -String painArea
+        -int painLevel
+        -recordTreatment(detail)
+        -manageFollowUp()
+    }
+    class EmergencyService {
+        +playAlertSound(userId, soundFile)
+        +sendSMS(contactList, message)
+        +requestRescue(userId, location)
+        +notifyUser(userId, message)
+        +showPopup(userId, message)
+        +playSound(userId, soundFile)
+        +sendPushNotification(userId, message)
+    }
+    class HearingStudent {
+        +participateInInteraction()
+    }
+    class DeafStudent
+    class SubtitleSettings {
+        -int size
+        -String color
+        +saveSettings(userId)
+    }
+    class BingoMissionService {
+        +generateBingo(userId)
+        +getMissionList()
+        +calculateConversationFrequency(userId, peerId)
+    }
+    class NoticeBoard {
+        +getClassNotices()
+        +getSchoolNotices()
+        +getCenterNotices(location)
+        +getClassSchedule()
+        +showEvacuationEmojiIfDrill()
+    }
+    class MoodVisualizer {
+        +renderCharacter(Mood)
+        +displayClassMood()
+    }
+    class LectureMaterial {
+        +uploadMaterial(file)
+        +getContent()
+        +onWordClick(word)
+    }
+    class ConversationService {
+        +capturePeerSpeech()
+        +convertToCaption()
+        +visualizeWaveform(SpeechLog)
+    }
+    class Classroom {
+        -String classId
+        -List~User~ members
+        +create()
+        +addStudent(User)
+    }
+    class Notice {
+        -String noticeId
+        -String content
+        -DateTime date
+        -String category
+    }
+    class DictionaryService {
+        +getDefinition(word)
+        +getPronunciation(word)
+    }
+    class Mood {
+        -String name
+        -String icon
+    }
+    class SessionActivity {
+        -String activityId
+        -String subject
+        -DateTime startTime
+        -DateTime endTime
+        +assignRole(User, String role)
+        +recordSpeech()
+        +recordSpeechDirection()
+        +linkToSpeechLog()
+    }
+    class Mission {
+        -String missionId
+        -String title
+        -Boolean isComplete
+        -String type
+        +markComplete()
+        +updateStatus()
+    }
+    class GPSService {
+        +getCurrentLocation(userId)
+    }
+    class SpeechLog {
+        -String content
+        -User speaker
+        -DateTime timestamp
+        -float dBLevel
+    }
+    User <|-- Teacher
+    User <|-- HealthTeacher
+    User <|-- HearingStudent
+    User <|-- DeafStudent
+    User "1" --> "1" EmergencyService : uses
+    NoiseSensor "1" --> "1" EmergencyService : triggers alert
+    SirenDetector "1" --> "1" EmergencyService : triggers alert
+    User "1" --> "1" InteractionService : triggers surprise message
+    User "1" --> "1" HealthVisit : visits
+    HealthVisit "1" *-- "1" HealthRecord : contains
+    HealthTeacher "1" --> "*" HealthRecord : manages
+    Teacher "1" --> "1" NoticeBoard : manages class notices
+    User "1" --> "1" NoticeBoard : reads notices
+    User "0..*" --> "1" Classroom : has
+    Teacher "1..*" --> "1" Classroom : creates
+    Teacher "1" --> "1" SessionActivity : teaches
+    Teacher "1" --> "*" LectureMaterial : uploads
+    User "1" --> "1" LectureMaterial : accesses
+    Teacher "1" --> "1" MoodVisualizer : views mood
+    MoodVisualizer "1" --> "1" Classroom : displaysMood
+    MoodVisualizer "1" --> "1" Mood : renders
+    User "1" --> "1" Mood : selects
+    NoticeBoard "1" o-- "1..*" Notice : contains
+    Classroom "1" *-- "*" Mission : includes
+    User "*" --> "1" SessionActivity : participates
+    HearingStudent "1" --> "1" SessionActivity : attends
+    DeafStudent "1" --> "1" SessionActivity : attends
+    Classroom "1" --> "1" SessionActivity : schedules
+    SessionActivity "1" *-- "0..*" SpeechLog : logs
+    SpeechLog "1" --> "1" User : spokenBy
+    User "1" --> "1" SubtitleSettings : sets
+    SubtitleSettings "1" --> "1" ConversationService : affects captions
+    HearingStudent "1" --> "1" ConversationService : speaks
+    ConversationService "1" --> "*" DeafStudent : deliversCaptions
+    HearingStudent "1" --> "1" DeafStudent : communicatesWith
+    User "1" --> "1" BingoMissionService : participates
+    BingoMissionService "*" --> "1" Mission : manages
+    Teacher "1" --> "1" BingoMissionService : assigns
+    DeafStudent "1" --> "1" GPSService : uses
+    User "*" --> "1" DictionaryService : uses
+    DictionaryService ..|> LectureMaterial : supports

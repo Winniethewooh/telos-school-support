@@ -1,0 +1,48 @@
+%% 보관 이미지에서 복원한 Mermaid 코드. 당시 원본 소스가 아닙니다.
+sequenceDiagram
+    participant Deaf as 난청 학생
+    participant Hearing as 건청 학생
+    participant UI as UI
+    participant Mic as 마이크 센서
+    participant Speech as 음성 인식 API
+    participant Speaker as 화자분리 API
+    participant STT as STT
+    participant AI as 생성형 AI
+    loop 대화가 종료될 때까지
+        par 학생 간 대화
+            Deaf->>Hearing: 대화
+            Hearing->>Deaf: 대화
+        and 음성 수집과 자막
+            Mic->>Mic: 대화 음성 수집
+            Mic->>Speaker: 음성 데이터 제공
+            Mic->>Mic: 발화 방향 파악
+            Speaker->>Speaker: 발화자 구분
+            Speaker-->>Mic: 발화자 구분 데이터 제공
+            Mic->>Mic: 발화자별 dB 파악
+            Mic-->>UI: 발화자별 dB 시각화
+            Mic->>Speech: 음성 데이터 제공
+            Speech->>Speech: 음성 인식
+            Speech-->>UI: 음성인식 데이터 제공
+            UI-->>Deaf: 자막 형태로 전달
+        end
+        alt 난청 학생 본인의 목소리 크기가 적절한 경우
+            Deaf->>Hearing: 계속 상호작용
+        else 목소리 크기 조절이 필요한 경우
+            Deaf->>Deaf: 목소리 크기 조절
+            Deaf-->>Hearing: 상호작용
+        end
+        alt 대화 내용을 이해했을 경우
+            Deaf->>Hearing: 계속 상호작용
+        else 대화 관련 요청이 필요한 경우
+            Deaf->>UI: 대화 관련 요청 메시지 선택
+            UI->>STT: 유저가 선택한 메시지 데이터 전달
+            STT->>STT: 음성 변환
+            Hearing-->>Deaf: 요청 반영
+        end
+        loop 30초마다
+            Speech->>AI: 30초간의 음성 텍스트 전달
+            AI->>AI: 텍스트 요약 생성
+            AI-->>UI: 요약 텍스트 전달
+            UI-->>Deaf: 자막 전달
+        end
+    end

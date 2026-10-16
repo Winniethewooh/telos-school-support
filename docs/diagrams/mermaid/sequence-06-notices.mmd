@@ -1,0 +1,33 @@
+%% 보관 이미지에서 복원한 Mermaid 코드. 당시 원본 소스가 아닙니다.
+sequenceDiagram
+    actor User as 사용자
+    participant Notice as 공지서비스
+    participant School as 학교API
+    participant Calendar as 학급캘린더
+    participant Training as 훈련예정서비스
+    participant Location as 위치서비스
+    participant Center as 센터API
+    participant Drill as 훈련예정서비스2차서비스
+    User->>Notice: 학교 공지 요청()
+    Notice->>School: getSchoolNotices()
+    School-->>Notice: 공지 목록 반환()
+    Notice-->>User: 공지 목록 표시()
+    User->>Notice: 학급 일정 요청()
+    Notice->>Calendar: getClassSchedule()
+    Calendar-->>Notice: 일정 목록 반환()
+    alt 일정 중 대피훈련 포함
+        Notice->>Training: getTrainingVisualization()
+        Drill-->>Notice: 시각화 자료 반환()
+        Notice-->>User: 일정 + 시각화 표시()
+    else 대피훈련 미포함
+        Notice-->>User: 일정만 표시()
+    end
+    User->>Notice: 자원센터 공지 요청()
+    Notice->>Location: getCurrentLocation()
+    Location-->>Notice: [lat, lng]
+    opt 반경 1km 이내 센터 있음
+        Notice-->>User: 근처 센터 알림
+    end
+    Notice->>Center: getNearbyCenterNotices(lat, lng)
+    Center-->>Notice: 센터 공지 반환()
+    Notice-->>User: 센터 공지 표시()

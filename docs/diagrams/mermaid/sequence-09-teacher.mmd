@@ -1,0 +1,25 @@
+%% 보관 이미지에서 복원한 Mermaid 코드. 당시 원본 소스가 아닙니다.
+sequenceDiagram
+    actor Teacher as 담임교사
+    participant Service as 서비스
+    participant Notification as 알림서비스
+    participant Student as 난청학생
+    Teacher->>Service: 1. 학생 정보 수정
+    rect rgb(245, 245, 250)
+        Note over Teacher,Notification: 자료업로드 및 알림
+        Teacher->>Service: 2. 강의자료 업로드
+        Service->>Notification: 3. 강의자료 업로드 알림
+        Teacher->>Service: 4. 학급 공지 업로드
+        Service->>Notification: 5. 학급 공지 업로드 알림
+    end
+    rect rgb(245, 245, 250)
+        Note over Teacher,Service: 보조기기 검색
+        Teacher->>Service: 6. 보조기기 정보 검색
+        Service-->>Teacher: 7. 보조기기 정보 제공
+    end
+    loop 난청학생의 문제가 해결될 때까지
+        Teacher->>Student: 8. 난청학생 의사 확인
+        Student-->>Service: 9. 개인 의사표현
+        Service-->>Teacher: 10. 난청학생 의사 전달
+        Teacher->>Teacher: 11. 피드백 수용
+    end

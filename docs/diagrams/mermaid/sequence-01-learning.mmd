@@ -1,0 +1,87 @@
+%% 보관 이미지에서 복원한 Mermaid 코드. 당시 원본 소스가 아닙니다.
+sequenceDiagram
+    participant Student as 난청 학생
+    participant Teacher as 교사
+    participant UI as UI
+    participant Mic as 마이크 센서
+    participant Dictionary as 사전 API
+    participant STT as 음성인식 API
+    participant AI as 생성형 AI
+    Mic->>Mic: 소리 인식
+    Mic->>STT: 음성 인식 API 호출
+    loop 수업 소리 입력 중
+        Mic->>Mic: 교사 음성 감지
+        Mic-->>STT: 음성 데이터 전달
+        STT->>STT: 음성 텍스트 변환
+        STT-->>UI: 자막에 데이터 전달
+        UI-->>Student: 자막 제공
+        opt 학생이 질문하는 경우
+            Student->>Teacher: 질문
+            par 답변
+                Teacher-->>Student: 답변 제공
+            and 질문 시각화
+                Mic->>Mic: 난청 학생 발화 인식
+                Mic-->>UI: 인식 데이터 전달
+                UI-->>Student: 강조 메시지 제공
+            end
+        end
+        opt 언어 교과의 경우
+            Student->>Student: 학습 자료 내 단어 탭
+            alt 영어 교과의 경우
+                par 뜻 검색
+                    Student->>Dictionary: 단어 검색
+                    Dictionary-->>Student: 단어 뜻 제공
+                and 발음 검색
+                    Mic->>Dictionary: 단어 발음 검색
+                    Dictionary-->>Student: 단어 발음 제공
+                end
+            else 그 외 교과
+                Student->>AI: 단어 검색
+                AI-->>Student: 단어 뜻 제공
+            end
+            opt 발음 연습을 하는 경우
+                Mic->>Mic: 교사 음성 수집
+                Mic->>AI: 음성 데이터 전달
+                AI->>AI: 파형 시각화
+                AI-->>UI: 파형 그래프 제공
+                Student->>Student: 발음 연습
+                Mic->>Mic: 학생 음성 수집
+                Mic->>AI: 음성 데이터 전달
+                AI->>AI: 파형 시각화
+                AI-->>UI: 파형 그래프 제공
+                Student->>Student: 파형 그래프 비교를 통한 발음 교정
+            end
+        end
+        opt 음악 교과의 경우
+            Mic->>Mic: 음악 감지
+            par 진동
+                Mic-->>Student: 박자를 진동으로 표현
+            and 시각화
+                Mic->>AI: 데이터 전달
+                AI->>AI: 음악 시각화
+                AI-->>UI: 음악 시각화 제공
+            end
+        end
+        opt 제스처 수행
+            Student->>UI: 자막 탭
+            UI->>UI: 학생 요청 예시 문구 제시
+            Student->>UI: 문구 선택
+            UI->>UI: 학생이 선택한 문구 교사 화면에 제공
+            Teacher->>Teacher: 학생 요구 반영
+            Student->>UI: 자막 롱프레스
+            UI->>UI: 북마크 생성
+            Student->>UI: 좌우 더블탭
+            UI->>UI: 자막 설정창
+            Student->>Student: 자막 설정 변경
+            Student->>UI: 자막 핀치인
+            UI->>UI: 자막 폰트 크기 축소
+            Student->>UI: 자막 핀치아웃
+            UI->>UI: 자막 폰트 크기 확대
+        end
+        loop 3분마다
+            Mic->>AI: 3분 간의 텍스트 데이터 전달
+            AI->>AI: 요약본 생성
+            AI-->>UI: 데이터 전달
+            UI->>UI: 요약본 형태 구성
+        end
+    end

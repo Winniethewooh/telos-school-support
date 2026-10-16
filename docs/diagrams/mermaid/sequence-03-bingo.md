@@ -1,0 +1,40 @@
+# 미션빙고·대화 주제
+
+[Mermaid 코드](sequence-03-bingo.mmd) · [원본](../sequence.pdf#page=3) · [목록](README.md)
+
+보관 이미지의 요소와 관계를 Mermaid로 복원했습니다. 배치는 자동으로 재구성됩니다.
+
+```mermaid
+sequenceDiagram
+    participant Student as 학생 (난청·건청)
+    participant UI as UI
+    participant Server as 서버
+    participant AI as 생성형 AI
+    opt 달이 바뀌었을 때
+        AI->>AI: 이달의 미션 생성
+        AI-->>Server: 생성된 미션 저장
+        Server-->>UI: 미션 데이터 제공
+        UI->>UI: 빙고판 형태로 구성
+    end
+    Student->>UI: 빙고판 확인
+    UI->>UI: 빙고판 제공
+    Student->>Student: 미션 수행
+    Student->>UI: 미션 달성 버튼
+    UI->>Server: 달성 데이터 전달
+    Server->>Server: 미션 달성도 계산
+    Server->>Server: 미션 달성도 저장
+    Server-->>UI: 달성 데이터 전달
+    UI-->>Student: 미션 달성 여부 시각화
+    opt 미션 수행 중 대화 주제가 필요할 경우
+        Student->>UI: 대화 주제 요청
+        UI->>AI: 요청 프롬프트 전달
+        AI->>AI: 대화 주제 생성
+        AI-->>Server: 생성된 주제 저장
+        Server-->>UI: 데이터 불러오기
+        UI-->>Student: 대화 주제 리스트 제공
+        Student->>Student: 대화
+    end
+    Server->>Server: 미션 달성도 기준 Top 3 계산
+    Server-->>UI: Top 3 데이터 전달
+    UI->>UI: 명예의 전당 형태로 구성
+```
